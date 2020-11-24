@@ -62,4 +62,12 @@ class Movie {
     genreIds = json['genre_ids'].cast<int>();
     originalLanguage = json['original_language'];
   }
+
+  getPosterImg() {
+    if (posterPath == null) {
+      return 'https://www.segelectrica.com.co/wp-content/themes/consultix/images/no-image-found-360x250.png';
+    } else {
+      return 'https://image.tmdb.org/t/p/w500/$posterPath';
+    }
+  }
 }
