@@ -57,7 +57,7 @@ class Actor {
 
   getPhoto() {
     if (profilePath == null) {
-      return 'https://lh3.googleusercontent.com/proxy/vE5yMu7SJuUEBILZtOnCxZ6EhERSiMUtG-b6fZpLRGjfAZdrutaj0NauQC1vtUpmMzbMKwTF7r9YqlvVc7LU_IIgCY8TQfRK9756FUkWiW9BFb9_0A8qr8OYFWEX';
+      return 'https://img.favpng.com/17/19/1/business-google-account-organization-service-png-favpng-sUuKmS4aDNRzxDKx8kJciXdFp.jpg';
     } else {
       return 'https://image.tmdb.org/t/p/w500/$profilePath';
     }
