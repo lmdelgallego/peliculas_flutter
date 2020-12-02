@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas_flutter/src/models/movie_model.dart';
+import 'package:peliculas_flutter/src/providers/movies_provider.dart';
 
 class DataSearch extends SearchDelegate {
   String seleccion = '';
+  final movieProvider = new MovieProvider();
   final peliculas = [
     'Spiderman',
     'Capitan America',
@@ -47,16 +50,54 @@ class DataSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // Crea los resultados que vamos a mostrar.
-    return Center(
-      child: Container(
-        height: 100.0,
-        width: 100.0,
-        color: Colors.blueAccent,
-        child: Text(seleccion),
-      ),
+    if (query.isEmpty) {
+      return Container();
+    }
+
+    return FutureBuilder(
+      future: movieProvider.searchMovie(query),
+      builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView(
+            children: snapshot.data.map((movie) {
+              return ListTile(
+                leading: FadeInImage(
+                  image: NetworkImage(movie.getPosterImg()),
+                  placeholder: AssetImage('assets/img/no-image.jpg'),
+                  width: 50.0,
+                  fit: BoxFit.contain,
+                ),
+                title: Text(movie.title),
+                subtitle: Text(movie.originalTitle),
+                onTap: () {
+                  close(context, null);
+                  movie.uniqueId = '';
+                  Navigator.pushNamed(context, 'details', arguments: movie);
+                },
+              );
+            }).toList(),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
+
+  // @override
+  // Widget buildResults(BuildContext context) {
+  //   // Crea los resultados que vamos a mostrar.
+  //   return Center(
+  //     child: Container(
+  //       height: 100.0,
+  //       width: 100.0,
+  //       color: Colors.blueAccent,
+  //       child: Text(seleccion),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget buildSuggestions(BuildContext context) {
